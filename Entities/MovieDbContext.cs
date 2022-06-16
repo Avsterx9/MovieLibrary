@@ -4,13 +4,13 @@ namespace MovieLibrary.Entities
 {
     public class MovieDbContext : DbContext
     {
+        public DbSet<Movie> Movies { get; set; }
+        public DbSet<Actor> Actors { get; set; }
+
         public MovieDbContext(DbContextOptions<MovieDbContext> options) : base(options)
         {
 
         }
-
-        public DbSet<Movie> Movies { get; set; }
-        public DbSet<Actor> Actors { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -21,6 +21,17 @@ namespace MovieLibrary.Entities
                 eb.Property(wi => wi.ImgSrc).HasColumnName("Img_Src");
                 eb.Property(wi => wi.ReleaseDate).HasColumnName("Release_Date");
             });
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            var connectionString = configuration.GetConnectionString("MovieLibraryConnectionString");
+            optionsBuilder.UseSqlServer(connectionString);
         }
     }
 }

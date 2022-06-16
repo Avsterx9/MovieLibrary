@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using MovieLibrary;
 using MovieLibrary.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,10 +11,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
-builder.Services.AddDbContext<MovieDbContext>(
-    option => option.UseSqlServer(builder.Configuration.GetConnectionString("MovieLibraryConnectionString"))
-    );
+var connectionString = builder.Configuration.GetConnectionString("MovieLibraryConnectionString");
+builder.Services.AddDbContext<MovieDbContext>(x => x.UseSqlServer(connectionString));
 
 var app = builder.Build();
 
