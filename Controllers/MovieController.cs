@@ -16,15 +16,26 @@ namespace MovieLibrary.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Movie>>> GetMovies()
+        public async Task<ActionResult<List<Movie>>> Get()
         {
-            return Ok(await dbContext.Movies.ToListAsync());
+            var movies = dbContext.Movies
+                .Include(a => a.Actors)
+                .ToListAsync();
+
+            return Ok(await movies);
         }
 
         [HttpPost]
-        public async Task<ActionResult<List<Movie>>> AddNewMovie()
+        public async Task<ActionResult<List<Movie>>> AddMovie(Movie movie)
         {
-            return Ok(await dbContext.Movies.ToListAsync());
+            dbContext.Movies.Add(movie);
+            await dbContext.SaveChangesAsync();
+
+            var movies = dbContext.Movies
+                .Include(a => a.Actors)
+                .ToListAsync();
+
+            return Ok(await movies);
         }
 
     }

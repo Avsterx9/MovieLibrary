@@ -8,6 +8,6 @@
         public Category Category { get; set; }
         public DateTime ReleaseDate { get; set; }
         public string ImgSrc { get; set; }
-        public List<Actor> Actors  { get; set; }
+        public virtual ICollection<Actor> Actors  { get; set; }
     }
 }
