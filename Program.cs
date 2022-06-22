@@ -12,6 +12,10 @@ builder.Services.AddControllers();
 var connectionString = builder.Configuration.GetConnectionString("MovieLibraryConnectionString");
 builder.Services.AddDbContext<MovieDbContext>(x => x.UseSqlServer(connectionString));
 
+// Register AutoMapper
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
