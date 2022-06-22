@@ -1,11 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "Ao0NsRBWxH1O0jnLRiSaBUtIVuziq/f8xXymA4U3W3/sl4CEuZMz+2lfVM/ygAuZcQGg9yvMWap1aBbsq0mgEw==",
+  "dgSpecHash": "t79/JDsXe+lI92zmFFM4wAEaJSvB/v3MaXfW+Ivx5n6gZKvHcNMrjJ3er7Kb6vljSKSKM9GcsVZXIzqyYBWlfA==",
   "success": true,
   "projectFilePath": "D:\\VSCProjects\\MovieLibrary\\MovieLibrary\\MovieLibrary.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\kamil\\.nuget\\packages\\automapper\\11.0.0\\automapper.11.0.0.nupkg.sha512",
+    "C:\\Users\\kamil\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\11.0.0\\automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512",
     "C:\\Users\\kamil\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
-    "C:\\Users\\kamil\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
+    "C:\\Users\\kamil\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\kamil\\.nuget\\packages\\microsoft.data.sqlclient\\2.1.4\\microsoft.data.sqlclient.2.1.4.nupkg.sha512",
     "C:\\Users\\kamil\\.nuget\\packages\\microsoft.data.sqlclient.sni.runtime\\2.1.1\\microsoft.data.sqlclient.sni.runtime.2.1.1.nupkg.sha512",
     "C:\\Users\\kamil\\.nuget\\packages\\microsoft.entityframeworkcore\\6.0.5\\microsoft.entityframeworkcore.6.0.5.nupkg.sha512",
