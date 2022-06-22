@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MovieLibrary.DtoModels;
 using MovieLibrary.Entities;
 using System.Collections.Generic;
 
@@ -10,9 +12,11 @@ namespace MovieLibrary.Controllers
     public class MovieController : ControllerBase
     {
         private readonly MovieDbContext dbContext;
-        public MovieController(MovieDbContext dbContext)
+        private readonly IMapper mapper;
+        public MovieController(MovieDbContext dbContext, IMapper mapper)
         {
             this.dbContext = dbContext;
+            this.mapper = mapper;
         }
 
         [HttpGet]
@@ -26,16 +30,13 @@ namespace MovieLibrary.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<List<Movie>>> AddMovie(Movie movie)
+        public async Task<ActionResult<Movie>> AddMovie(CreateMovieDto movieDto)
         {
+            var movie = mapper.Map<Movie>(movieDto);
             dbContext.Movies.Add(movie);
             await dbContext.SaveChangesAsync();
 
-            var movies = dbContext.Movies
-                .Include(a => a.Actors)
-                .ToListAsync();
-
-            return Ok(await movies);
+            return Ok(movie);
         }
 
     }
