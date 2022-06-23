@@ -68,5 +68,23 @@ namespace MovieLibrary.Controllers
             return Ok("Movie successfuly deleted");
         }
 
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateMovie(int id, CreateMovieDto movieDto)
+        {
+            var movie = await dbContext.Movies.FindAsync(id);
+
+            if (movie == null)
+                return NotFound("Movie not Found");
+
+            movie.Title = movieDto.Title;
+            movie.Description = movieDto.Description;
+            movie.Category = movieDto.Category;
+            movie.ReleaseDate = movieDto.ReleaseDate;
+            movie.ImgSrc = movieDto.ImgSrc;
+
+            await dbContext.SaveChangesAsync();
+
+            return Ok(movie);
+        }
     }
 }
