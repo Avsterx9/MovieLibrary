@@ -54,5 +54,19 @@ namespace MovieLibrary.Controllers
             return Ok(movie);
         }
 
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteMovie(int id)
+        {
+            var movie = await dbContext.Movies.FindAsync(id);
+
+            if (movie == null)
+                return NotFound("Movie not Found");
+
+
+            dbContext.Movies.Remove(movie);
+            await dbContext.SaveChangesAsync();
+            return Ok("Movie successfuly deleted");
+        }
+
     }
 }
