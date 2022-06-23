@@ -29,6 +29,21 @@ namespace MovieLibrary.Controllers
             return Ok(await movies);
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Movie>> GetById(int id)
+        {
+            var movie = dbContext.Movies
+                .Include(a => a.Actors)
+                .SingleOrDefault(a => a.Id == id);
+
+            if(movie != null)
+            {
+                return Ok(movie);
+            }
+
+            return NotFound("Movie not Found");
+        }
+
         [HttpPost]
         public async Task<ActionResult<Movie>> AddMovie(CreateMovieDto movieDto)
         {
