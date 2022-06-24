@@ -9,7 +9,7 @@ namespace MovieLibrary.Profiles
         public MovieMappingProfile()
         {
             // Src -> destination
-            CreateMap<CreateMovieDto, Movie>();
+            CreateMap<MovieDto, Movie>();
         }
 
     }

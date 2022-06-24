@@ -2,7 +2,7 @@
 
 namespace MovieLibrary.DtoModels
 {
-    public class CreateMovieDto
+    public class MovieDto
     {
         public string Title { get; set; }
         public string Description { get; set; }

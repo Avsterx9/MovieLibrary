@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieLibrary.DtoModels;
 using MovieLibrary.Entities;
+using MovieLibrary.Services;
 using System.Collections.Generic;
 
 namespace MovieLibrary.Controllers
@@ -11,78 +12,61 @@ namespace MovieLibrary.Controllers
     [Route("api/movieLibrary")]
     public class MovieController : ControllerBase
     {
-        private readonly MovieDbContext dbContext;
-        private readonly IMapper mapper;
-        public MovieController(MovieDbContext dbContext, IMapper mapper)
+        private readonly IMovieService movieService;
+
+        public MovieController(IMovieService movieService)
         {
-            this.dbContext = dbContext;
-            this.mapper = mapper;
+            this.movieService = movieService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Movie>>> Get()
+        public ActionResult<IEnumerable<Movie>> Get()
         {
-            var movies = dbContext.Movies
-                .Include(a => a.Actors)
-                .ToListAsync();
-
-            return Ok(await movies);
+            return Ok(movieService.GetAll());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Movie>> GetById(int id)
+        public ActionResult<Movie> GetById(int id)
         {
-            var movie = dbContext.Movies
-                .Include(a => a.Actors)
-                .SingleOrDefault(a => a.Id == id);
+            var movie = movieService.GetById(id);
 
-            if(movie != null)
+            if(movie is null)
             {
-                return Ok(movie);
+                return NotFound("Movie not Found");
             }
-
-            return NotFound("Movie not Found");
-        }
-
-        [HttpPost]
-        public async Task<ActionResult<Movie>> AddMovie(CreateMovieDto movieDto)
-        {
-            var movie = mapper.Map<Movie>(movieDto);
-            dbContext.Movies.Add(movie);
-            await dbContext.SaveChangesAsync();
-
             return Ok(movie);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteMovie(int id)
+        [HttpPost]
+        public ActionResult AddMovie(MovieDto movieDto)
         {
-            var movie = await dbContext.Movies.FindAsync(id);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
 
-            if (movie == null)
+            movieService.Create(movieDto);
+            return Ok("Movie has been added");
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult DeleteMovie(int id)
+        {
+            var isRemoved = movieService.DeleteById(id);
+
+            if (!isRemoved)
                 return NotFound("Movie not Found");
 
-
-            dbContext.Movies.Remove(movie);
-            await dbContext.SaveChangesAsync();
             return Ok("Movie successfuly deleted");
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateMovie(int id, CreateMovieDto movieDto)
+        public ActionResult<Movie> UpdateMovie(int id, MovieDto movieDto)
         {
-            var movie = await dbContext.Movies.FindAsync(id);
+            var movie = movieService.UpdateMovie(id, movieDto);
 
             if (movie == null)
                 return NotFound("Movie not Found");
-
-            movie.Title = movieDto.Title;
-            movie.Description = movieDto.Description;
-            movie.Category = movieDto.Category;
-            movie.ReleaseDate = movieDto.ReleaseDate;
-            movie.ImgSrc = movieDto.ImgSrc;
-
-            await dbContext.SaveChangesAsync();
 
             return Ok(movie);
         }

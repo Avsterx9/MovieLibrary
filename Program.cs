@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MovieLibrary;
 using MovieLibrary.Entities;
+using MovieLibrary.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,7 @@ builder.Services.AddDbContext<MovieDbContext>(x => x.UseSqlServer(connectionStri
 
 // Register AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<IMovieService, MovieService>();
 
 
 builder.Services.AddEndpointsApiExplorer();
