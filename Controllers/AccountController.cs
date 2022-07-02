@@ -16,7 +16,7 @@ namespace MovieLibrary.Controllers
         }
 
         [HttpPost("register")]
-        public ActionResult RegisterUser(RegisterUserDto registerDto)
+        public ActionResult<String> RegisterUser(RegisterUserDto registerDto)
         {
             accountService.RegisterUser(registerDto);
             return Ok();
