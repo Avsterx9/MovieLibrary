@@ -16,6 +16,7 @@ builder.Services.AddDbContext<MovieDbContext>(x => x.UseSqlServer(connectionStri
 // Register AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IMovieService, MovieService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 
 builder.Services.AddEndpointsApiExplorer();
