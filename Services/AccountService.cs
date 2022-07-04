@@ -1,7 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using MovieLibrary.DtoModels;
 using MovieLibrary.Entities;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace MovieLibrary.Services
 {
@@ -58,6 +62,28 @@ namespace MovieLibrary.Services
             }
 
             //Dodawanie claimów
+
+            var claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
+                new Claim(ClaimTypes.Role, user.Role.Name),
+                new Claim(ClaimTypes.DateOfBirth, user.DateOfBirth.Value.ToString("yyyy-MM-dd"))
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authSettings.JwtKey));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var expires = DateTime.Now.AddDays(authSettings.JwtExpireDays);
+
+            var token = new JwtSecurityToken(
+                authSettings.JwtIssuer,
+                authSettings.JwtIssuer,
+                claims,
+                expires: expires,
+                signingCredentials: credentials);
+             
+            var tokenHandler = new JwtSecurityTokenHandler();
+            return tokenHandler.WriteToken(token);
 
         }
     }
