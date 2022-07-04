@@ -21,5 +21,11 @@ namespace MovieLibrary.Controllers
             accountService.RegisterUser(registerDto);
             return Ok();
         }
+
+        public ActionResult<String> LoginUser(LoginUserDto loginDto)
+        {
+            string token = accountService.LoginUser(loginDto);
+            return Ok();
+        }
     }
 }

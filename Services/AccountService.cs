@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using MovieLibrary.DtoModels;
 using MovieLibrary.Entities;
 
@@ -7,6 +8,7 @@ namespace MovieLibrary.Services
     public interface IAccountService
     {
         void RegisterUser(RegisterUserDto dto);
+        string LoginUser(LoginUserDto loginDto);
     }
 
     public class AccountService : IAccountService
@@ -38,6 +40,25 @@ namespace MovieLibrary.Services
 
             dbContext.Users.Add(newUser);
             dbContext.SaveChanges();
+        }
+
+        public string LoginUser(LoginUserDto loginDto)
+        {
+            var user = dbContext.Users
+                .Include(x => x.Role)
+                .FirstOrDefault(x => x.Email == loginDto.Email);
+
+            if(user is null)
+                return null;
+
+            var result = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginDto.Password);
+            if(result == PasswordVerificationResult.Failed)
+            {
+                return null;
+            }
+
+            //Dodawanie claimów
+
         }
     }
 }
