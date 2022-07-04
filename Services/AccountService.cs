@@ -24,7 +24,20 @@ namespace MovieLibrary.Services
 
         public void RegisterUser(RegisterUserDto dto)
         {
-            Console.WriteLine("elo");
+            var newUser = new User()
+            {
+                Email = dto.Email,
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                DateOfBirth = dto.DateOfBirth,
+                RoleId = dto.RoleId,
+            };
+
+            var hashedPassword = passwordHasher.HashPassword(newUser, dto.Password);
+            newUser.PasswordHash = hashedPassword;
+
+            dbContext.Users.Add(newUser);
+            dbContext.SaveChanges();
         }
     }
 }
